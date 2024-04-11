@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.5.33424.131
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8CB7F564-C6BF-4C29-BD28-635F0EAE1BD4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{90F0D4DA-DBC8-45D7-B9FD-5A9441733958}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MP3Player.App", "src\MP3Player.App\MP3Player.App.csproj", "{E27AC256-A125-434A-B58A-20E0E5B9BF52}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E27AC256-A125-434A-B58A-20E0E5B9BF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E27AC256-A125-434A-B58A-20E0E5B9BF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E27AC256-A125-434A-B58A-20E0E5B9BF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E27AC256-A125-434A-B58A-20E0E5B9BF52}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{E27AC256-A125-434A-B58A-20E0E5B9BF52} = {8CB7F564-C6BF-4C29-BD28-635F0EAE1BD4}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B4B791BE-0D0E-4D93-AF11-546A405E6B5A}
+	EndGlobalSection
+EndGlobal

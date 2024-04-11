@@ -1,0 +1,80 @@
+﻿<UserControl
+    x:Class="MP3Player.App.Views.TrackView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:MP3Player.App.Converters"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:MP3Player.App.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="500"
+    d:DesignWidth="250"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+        <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <StackPanel
+            Grid.Row="0"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Vertical">
+            <TextBlock FontSize="18" Text="File name:" />
+            <TextBlock FontSize="14" Text="{Binding TrackName}" />
+            <Button
+                x:Name="Btn_open"
+                Width="70"
+                Command="{Binding OpenTrackCommand}"
+                Content="Open" />
+        </StackPanel>
+        <Slider
+            x:Name="Slider"
+            Grid.Row="1"
+            Margin="10,0"
+            Maximum="{Binding Duration}"
+            Minimum="0"
+            Value="{Binding Value}" />
+        <Button
+            Grid.Row="2"
+            Command="{Binding ShowMeMedia}"
+            Content="Show" />
+        <StackPanel
+            Grid.Row="3"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <TextBlock Text="{Binding TrackCurrent}" />
+            <TextBlock Text="{Binding TrackLength, UpdateSourceTrigger=PropertyChanged}" />
+        </StackPanel>
+        <StackPanel
+            Grid.Row="4"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Orientation="Horizontal">
+            <Button
+                Width="70"
+                Margin="5,0"
+                Command="{Binding PlayCommand}"
+                Content="Play"
+                Visibility="{Binding IsPlaying, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+            <Button
+                Width="70"
+                Margin="5,0"
+                Command="{Binding PauseCommand}"
+                Content="Pause"
+                Visibility="{Binding IsPlaying, Converter={StaticResource BooleanToVisibilityConverter}}" />
+            <Button
+                Width="70"
+                Margin="5,0"
+                Command="{Binding StopCommand}"
+                Content="Stop" />
+        </StackPanel>
+    </Grid>
+</UserControl>
