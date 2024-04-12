@@ -1,13 +1,18 @@
-﻿using MP3Player.App.Commands;
+﻿using MP3Player.App.Commands.MediaPlayer;
+using MP3Player.App.Commands.Slider;
+using System;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace MP3Player.App.ViewModels
 {
   public class TrackViewModel : ViewModelBase
   {
-    private MediaPlayer _mediaPlayer = new();
+    private readonly MediaPlayer _mediaPlayer;
     public MediaPlayer MediaPlayer { get { return _mediaPlayer; } }
+
+    private readonly DispatcherTimer _timer;
 
     private bool _isPlaying = false;
     public bool IsPlaying
@@ -18,6 +23,17 @@ namespace MP3Player.App.ViewModels
         _isPlaying = value;
         OnPropertyChanged();
         OnPropertyChanged(nameof(CanPlay));
+      }
+    }
+
+    private bool _isDraggingSlider = false;
+    public bool IsDraggingSlider
+    {
+      get { return _isDraggingSlider; }
+      set
+      {
+        _isDraggingSlider = value;
+        OnPropertyChanged();
       }
     }
 
@@ -33,13 +49,47 @@ namespace MP3Player.App.ViewModels
       }
     }
 
-    private string _trackLength = "0:00";
-    public string TrackLength
+    private double _trackProgress;
+    public double TrackProgress
     {
-      get { return _trackLength; }
+      get { return _trackProgress; }
       set
       {
-        _trackLength = value;
+        _trackProgress = value;
+        OnPropertyChanged();
+      }
+    }
+    private string _displayTrackProgress = "00:00:00";
+    public string DisplayTrackProgress
+    {
+      get { return _displayTrackProgress; }
+      set
+      {
+        _displayTrackProgress = value;
+        OnPropertyChanged();
+      }
+    }
+    private double _trackDuration = 1;
+    public double TrackDuration
+    {
+      get { return _trackDuration; }
+      set
+      {
+        _trackDuration = value;
+        OnPropertyChanged();
+      }
+    }
+
+    private string _displayTrackDuration = "00:00:00";
+    public string DisplayTrackDuration
+    {
+      get
+      {
+        return _displayTrackDuration;
+      }
+      set
+      {
+        _displayTrackDuration = value;
         OnPropertyChanged();
       }
     }
@@ -53,35 +103,9 @@ namespace MP3Player.App.ViewModels
     public ICommand PlayCommand { get; }
     public ICommand PauseCommand { get; }
     public ICommand StopCommand { get; }
-    public ICommand ShowMeMedia { get; }
+    public ICommand DragStartedCommand { get; }
+    public ICommand DragCompletedCommand { get; }
 
-
-    private double _duration;
-    public double Duration
-    {
-      get { return _duration; }
-      set
-      {
-        _duration = value;
-        OnPropertyChanged();
-      }
-    }
-    private double _value;
-    public double Value
-    {
-      get
-      {
-        return _value;
-      }
-      set
-      {
-        _mediaPlayer.Pause();
-        _value = value;
-        OnPropertyChanged();
-        ShowMeMedia.Execute(this);
-        _mediaPlayer.Play();
-      }
-    }
 
     public TrackViewModel()
     {
@@ -89,7 +113,34 @@ namespace MP3Player.App.ViewModels
       PlayCommand = new PlayCommand(this);
       PauseCommand = new PauseCommand(this);
       StopCommand = new StopCommand(this);
-      ShowMeMedia = new ShowMeMedia(this);
+
+      DragStartedCommand = new DragStartedCommand(this);
+      DragCompletedCommand = new DragCompletedCommand(this);
+
+      _mediaPlayer = new();
+      _timer = new()
+      {
+        Interval = TimeSpan.FromSeconds(1)
+      };
+      _timer.Tick += TimerTick;
+      _timer.Start();
+    }
+
+    private void TimerTick(object? sender, EventArgs e)
+    {
+      if (IsPlaying && !IsDraggingSlider)
+      {
+        _trackProgress = _mediaPlayer.Position.TotalSeconds;
+        _displayTrackProgress = TimeSpan.FromSeconds(_trackProgress).ToString(@"hh\:mm\:ss");
+
+        if (_trackProgress >= _trackDuration)
+        {
+          StopCommand.Execute(this);
+        }
+
+        OnPropertyChanged(nameof(DisplayTrackProgress));
+        OnPropertyChanged(nameof(TrackProgress));
+      }
     }
   }
 }

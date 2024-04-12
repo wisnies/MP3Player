@@ -35,23 +35,22 @@
                 Content="Open" />
         </StackPanel>
         <Slider
-            x:Name="Slider"
+            x:Name="sliProgress"
             Grid.Row="1"
             Margin="10,0"
-            Maximum="{Binding Duration}"
+            Maximum="{Binding TrackDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Minimum="0"
-            Value="{Binding Value}" />
-        <Button
-            Grid.Row="2"
-            Command="{Binding ShowMeMedia}"
-            Content="Show" />
+            Thumb.DragCompleted="sliProgress_DragCompleted"
+            Thumb.DragStarted="sliProgress_DragStarted"
+            ValueChanged="sliProgress_ValueChanged"
+            Value="{Binding TrackProgress}" />
         <StackPanel
             Grid.Row="3"
             HorizontalAlignment="Center"
             VerticalAlignment="Center"
             Orientation="Horizontal">
-            <TextBlock Text="{Binding TrackCurrent}" />
-            <TextBlock Text="{Binding TrackLength, UpdateSourceTrigger=PropertyChanged}" />
+            <TextBlock Margin="10" Text="{Binding DisplayTrackProgress}" />
+            <TextBlock Margin="10" Text="{Binding DisplayTrackDuration}" />
         </StackPanel>
         <StackPanel
             Grid.Row="4"

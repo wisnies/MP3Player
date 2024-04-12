@@ -1,8 +1,9 @@
 ﻿using Microsoft.Win32;
 using MP3Player.App.ViewModels;
+using System;
 using System.Threading.Tasks;
 
-namespace MP3Player.App.Commands
+namespace MP3Player.App.Commands.MediaPlayer
 {
   public class OpenTrackAsyncCommand : CommandBaseAsync
   {
@@ -27,19 +28,16 @@ namespace MP3Player.App.Commands
       if (dialogOk == true)
       {
         _fileName = fileDialog.FileName;
-        _viewModel.MediaPlayer.Open(new System.Uri(_fileName));
+        _viewModel.MediaPlayer.Open(new Uri(_fileName));
         do
         {
           await Task.Delay(10);
         } while (!_viewModel.MediaPlayer.NaturalDuration.HasTimeSpan);
+
         _viewModel.TrackName = fileDialog.SafeFileName;
-        var minutes = _viewModel.MediaPlayer.NaturalDuration.TimeSpan.Minutes.ToString();
-        var seconds = _viewModel.MediaPlayer.NaturalDuration.TimeSpan.Seconds.ToString();
-
-        _viewModel.TrackLength = $"{minutes}:{seconds}";
-        _viewModel.Duration = _viewModel.MediaPlayer.NaturalDuration.TimeSpan.TotalMilliseconds;
-
-        //TBLength.Text = _mediaPlayer.NaturalDuration.TimeSpan.TotalSeconds.ToString();
+        _viewModel.TrackProgress = 0;
+        _viewModel.TrackDuration = _viewModel.MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds;
+        _viewModel.DisplayTrackDuration = TimeSpan.FromSeconds(_viewModel.MediaPlayer.NaturalDuration.TimeSpan.TotalSeconds).ToString(@"hh\:mm\:ss");
       }
     }
   }
