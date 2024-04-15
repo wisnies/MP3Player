@@ -1,5 +1,6 @@
 ﻿using MP3Player.App.Commands.MediaPlayer;
 using MP3Player.App.Commands.Slider;
+using MP3Player.App.Commands.Window;
 using System;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -105,6 +106,7 @@ namespace MP3Player.App.ViewModels
     public ICommand StopCommand { get; }
     public ICommand DragStartedCommand { get; }
     public ICommand DragCompletedCommand { get; }
+    public ICommand CloseWindowCommand { get; }
 
 
     public TrackViewModel()
@@ -116,6 +118,8 @@ namespace MP3Player.App.ViewModels
 
       DragStartedCommand = new DragStartedCommand(this);
       DragCompletedCommand = new DragCompletedCommand(this);
+
+      CloseWindowCommand = new CloseWindowCommand();
 
       _mediaPlayer = new();
       _timer = new()

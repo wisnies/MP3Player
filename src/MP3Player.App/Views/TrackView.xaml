@@ -5,75 +5,140 @@
     xmlns:converters="clr-namespace:MP3Player.App.Converters"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MP3Player.App.Views"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    d:DesignHeight="500"
-    d:DesignWidth="250"
+    d:DesignHeight="550"
+    d:DesignWidth="300"
     mc:Ignorable="d">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
         <converters:InverseBooleanToVisibilityConverter x:Key="InverseBooleanToVisibilityConverter" />
     </UserControl.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <StackPanel
-            Grid.Row="0"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Vertical">
-            <TextBlock FontSize="18" Text="File name:" />
-            <TextBlock FontSize="14" Text="{Binding TrackName}" />
+
+    <StackPanel>
+        <StackPanel.Background>
+            <LinearGradientBrush StartPoint="0.1,0" EndPoint="0.3,1">
+                <GradientStop Offset="1" Color="#121212" />
+                <GradientStop Offset="1" Color="#292929" />
+            </LinearGradientBrush>
+        </StackPanel.Background>
+        <Grid Height="70">
             <Button
-                x:Name="Btn_open"
-                Width="70"
+                Margin="20,0"
+                HorizontalAlignment="Left"
                 Command="{Binding OpenTrackCommand}"
-                Content="Open" />
-        </StackPanel>
+                Style="{StaticResource ActionBtn}"
+                ToolTip="Open file">
+                <StackPanel Margin="-5">
+                    <materialDesign:PackIcon
+                        Width="20"
+                        Height="20"
+                        Kind="Folder" />
+                </StackPanel>
+            </Button>
+            <Button
+                Margin="20,0"
+                HorizontalAlignment="Right"
+                Command="{Binding CloseWindowCommand}"
+                Style="{StaticResource ActionBtn}"
+                ToolTip="Close">
+                <StackPanel Margin="-5">
+                    <materialDesign:PackIcon
+                        Width="20"
+                        Height="20"
+                        Kind="Close" />
+                </StackPanel>
+            </Button>
+        </Grid>
+        <Image
+            x:Name="imgIcon"
+            Width="230"
+            Height="230"
+            Margin="10"
+            Stretch="Uniform" />
+        <ScrollViewer
+            x:Name="svTrackName"
+            Margin="10"
+            HorizontalScrollBarVisibility="Hidden"
+            VerticalScrollBarVisibility="Hidden">
+            <TextBlock
+                x:Name="tbTrackName"
+                FontSize="14"
+                FontWeight="SemiBold"
+                Foreground="White"
+                Text="{Binding TrackName}"
+                TextAlignment="Center" />
+        </ScrollViewer>
+        <Grid Margin="0,30,0,0">
+            <TextBlock
+                Margin="20,0"
+                HorizontalAlignment="Left"
+                FontSize="11"
+                FontWeight="ExtraLight"
+                Foreground="White"
+                Text="{Binding DisplayTrackProgress}"
+                TextAlignment="Center" />
+            <TextBlock
+                Margin="20,0"
+                HorizontalAlignment="Right"
+                FontSize="11"
+                FontWeight="ExtraLight"
+                Foreground="White"
+                Text="{Binding DisplayTrackDuration}"
+                TextAlignment="Center" />
+        </Grid>
         <Slider
             x:Name="sliProgress"
             Grid.Row="1"
-            Margin="10,0"
+            Margin="20,0"
+            Foreground="#ff731101"
             Maximum="{Binding TrackDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
             Minimum="0"
             Thumb.DragCompleted="sliProgress_DragCompleted"
             Thumb.DragStarted="sliProgress_DragStarted"
-            ValueChanged="sliProgress_ValueChanged"
             Value="{Binding TrackProgress}" />
-        <StackPanel
-            Grid.Row="3"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
-            <TextBlock Margin="10" Text="{Binding DisplayTrackProgress}" />
-            <TextBlock Margin="10" Text="{Binding DisplayTrackDuration}" />
-        </StackPanel>
-        <StackPanel
-            Grid.Row="4"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center"
-            Orientation="Horizontal">
+        <WrapPanel Margin="0,30" HorizontalAlignment="Center">
             <Button
-                Width="70"
-                Margin="5,0"
+                Margin="10,0"
+                HorizontalAlignment="Right"
                 Command="{Binding PlayCommand}"
-                Content="Play"
-                Visibility="{Binding IsPlaying, Converter={StaticResource InverseBooleanToVisibilityConverter}}" />
+                Style="{StaticResource ActionBtn}"
+                ToolTip="Play"
+                Visibility="{Binding IsPlaying, Converter={StaticResource InverseBooleanToVisibilityConverter}}">
+                <StackPanel Margin="-5">
+                    <materialDesign:PackIcon
+                        Width="20"
+                        Height="20"
+                        Kind="Play" />
+                </StackPanel>
+            </Button>
             <Button
-                Width="70"
-                Margin="5,0"
+                Margin="10,0"
+                HorizontalAlignment="Right"
                 Command="{Binding PauseCommand}"
-                Content="Pause"
-                Visibility="{Binding IsPlaying, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                Style="{StaticResource ActionBtn}"
+                ToolTip="Pause"
+                Visibility="{Binding IsPlaying, Converter={StaticResource BooleanToVisibilityConverter}}">
+                <StackPanel Margin="-5">
+                    <materialDesign:PackIcon
+                        Width="20"
+                        Height="20"
+                        Kind="Pause" />
+                </StackPanel>
+            </Button>
             <Button
-                Width="70"
-                Margin="5,0"
+                Margin="10,0"
+                HorizontalAlignment="Left"
                 Command="{Binding StopCommand}"
-                Content="Stop" />
-        </StackPanel>
-    </Grid>
+                Style="{StaticResource ActionBtn}"
+                ToolTip="Stop">
+                <StackPanel Margin="-5">
+                    <materialDesign:PackIcon
+                        Width="20"
+                        Height="20"
+                        Kind="Stop" />
+                </StackPanel>
+            </Button>
+        </WrapPanel>
+    </StackPanel>
 </UserControl>

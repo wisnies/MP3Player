@@ -4,21 +4,30 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:MP3Player.App"
+    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:viewModels="clr-namespace:MP3Player.App.ViewModels;assembly="
     xmlns:views="clr-namespace:MP3Player.App.Views;assembly="
     Title="MP3Player"
-    Width="250"
-    Height="500"
+    Width="300"
+    Height="550"
+    AllowsTransparency="True"
+    Background="{x:Null}"
+    ResizeMode="NoResize"
+    WindowStyle="None"
     mc:Ignorable="d">
     <ScrollViewer VerticalScrollBarVisibility="Auto">
         <Grid>
+            <materialDesign:Card Margin="10" UniformCornerRadius="20">
+
+                <ContentControl Content="{Binding CurrentViewModel}" />
+
+            </materialDesign:Card>
             <Grid.Resources>
                 <DataTemplate DataType="{x:Type viewModels:TrackViewModel}">
                     <views:TrackView />
                 </DataTemplate>
             </Grid.Resources>
-            <ContentControl Content="{Binding CurrentViewModel}" />
         </Grid>
     </ScrollViewer>
 </Window>
